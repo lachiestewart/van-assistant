@@ -1,0 +1,23 @@
+[project]
+name = "core"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Lachie Stewart", email = "lachiestewart2003@gmail.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "pydantic>=2.12.5",
+    "shared",
+]
+
+[tool.uv.sources]
+shared = { workspace = true }
+
+[project.scripts]
+core = "core.main:main"
+
+[build-system]
+requires = ["uv_build>=0.9.16,<0.10.0"]
+build-backend = "uv_build"

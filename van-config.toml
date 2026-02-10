@@ -1,0 +1,12 @@
+[system]
+name = "Dora"
+
+[devices.mppt]
+name = "Victron MPPT 100/50"
+connection = "ble"
+
+[devices.dcdc]
+name = "Victron DC-DC 12/12-50A"
+
+[devices.charger]
+name = "Victron Charger 12/30"

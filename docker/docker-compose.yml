@@ -1,0 +1,33 @@
+services:
+  homeassistant:
+    container_name: homeassistant
+    image: "ghcr.io/home-assistant/home-assistant:stable"
+    volumes:
+      - homeassistant_data:/config
+      - /etc/localtime:/etc/localtime:ro
+      - /run/dbus:/run/dbus:ro
+    restart: unless-stopped
+    privileged: true
+    network_mode: host
+    environment:
+      TZ: Europe/Amsterdam
+    # devices:
+    #   - /dev/ttyUSB0:/dev/ttyUSB0
+
+  mqtt:
+    image: eclipse-mosquitto
+    container_name: van-mqtt
+    restart: unless-stopped
+
+    ports:
+      - 1883:1883
+
+    volumes:
+      - ./mosquitto/config:/mosquitto/config
+      - mosquitto_data:/mosquitto/data
+      - mosquitto_log:/mosquitto/log
+
+volumes:
+  homeassistant_data:
+  mosquitto_data:
+  mosquitto_log:
