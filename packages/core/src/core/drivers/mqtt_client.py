@@ -84,8 +84,8 @@ async def main() -> None:
     async with AIOMQTTClient(
         hostname=settings.mqtt_host,
         port=settings.mqtt_port,
-        username=settings.mqtt_username,
-        password=settings.mqtt_password,
+        # username=settings.mqtt_username,
+        # password=settings.mqtt_password,
     ) as mqtt_client:
         await mqtt_client.publish("test/topic", "Hello, MQTT!")
         await mqtt_client.subscribe("test/topic")

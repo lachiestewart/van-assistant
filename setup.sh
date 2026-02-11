@@ -5,6 +5,8 @@ set -euo pipefail
 MQTT_USERNAME="${MQTT_USERNAME:-user1}"
 MQTT_PASSWORD="${MQTT_PASSWORD:-password1}"
 MOSQUITTO_PASSWD_FILE="./mosquitto/config/passwd_file"
+MOSQUITTO_LOG_FILE="./mosquitto/log/mosquitto.log"
+MOSQUITTO_DATA_DIR="./mosquitto/data"
 
 # --- 1. Install Docker if missing ---
 if ! command -v docker >/dev/null 2>&1; then
@@ -23,10 +25,11 @@ fi
 # --- 2. Ensure mosquitto config directory exists ---
 mkdir -p "./mosquitto/config"
 echo "mosquitto_passwd_file: $MOSQUITTO_PASSWD_FILE"
-touch "$MOSQUITTO_PASSWD_FILE"
+mkdir  -p "$(dirname "$MOSQUITTO_PASSWD_FILE")" "$(dirname "$MOSQUITTO_LOG_FILE")" "$MOSQUITTO_DATA_DIR"
+touch "$MOSQUITTO_PASSWD_FILE" "$MOSQUITTO_LOG_FILE"
 
 # --- 3. Start Docker Compose ---
-sudo docker compose up -d
+docker compose up -d
 
 # --- 4. Create MQTT user ---
 sudo docker exec -i mosquitto sh -c "mosquitto_passwd -b /mosquitto/config/passwd_file '$MQTT_USERNAME' '$MQTT_PASSWORD'"
