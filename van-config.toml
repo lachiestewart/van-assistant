@@ -1,12 +1,25 @@
 [system]
 name = "Dora"
 
-[devices.mppt]
+[[devices]]
 name = "Victron MPPT 100/50"
-connection = "ble"
+brand = "victron"
+mac_address = "00:11:22:33:44:55" # Replace with actual
+encryption_key = "your_encryption_key_here" # Replace with actual key
 
-[devices.dcdc]
+[[devices]]
 name = "Victron DC-DC 12/12-50A"
+brand = "victron"
+mac_address = "00:11:22:33:44:55" # Replace with actual
+encryption_key = "your_encryption_key_here" # Replace with actual key
 
-[devices.charger]
+[[devices]]
 name = "Victron Charger 12/30"
+brand = "victron"
+mac_address = "00:11:22:33:44:55" # Replace with actual
+encryption_key = "your_encryption_key_here" # Replace with actual key
+
+[[devices]]
+name = "Renogy Inverter 2000W"
+brand = "renogy"
+ip_address = "192.168.1.100" # Replace with actual IP address

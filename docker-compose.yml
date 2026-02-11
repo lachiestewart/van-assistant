@@ -1,3 +1,5 @@
+name: van-assistant
+
 services:
   homeassistant:
     container_name: homeassistant
@@ -11,23 +13,20 @@ services:
     network_mode: host
     environment:
       TZ: Europe/Amsterdam
-    # devices:
-    #   - /dev/ttyUSB0:/dev/ttyUSB0
 
-  mqtt:
+  mosquitto:
+    container_name: mosquitto
     image: eclipse-mosquitto
-    container_name: van-mqtt
     restart: unless-stopped
 
     ports:
       - 1883:1883
+      - 9001:9001
 
     volumes:
       - ./mosquitto/config:/mosquitto/config
-      - mosquitto_data:/mosquitto/data
-      - mosquitto_log:/mosquitto/log
+      - ./mosquitto/data:/mosquitto/data
+      - ./mosquitto/log:/mosquitto/log
 
 volumes:
   homeassistant_data:
-  mosquitto_data:
-  mosquitto_log:

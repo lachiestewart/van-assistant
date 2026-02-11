@@ -1,8 +1,8 @@
 """Main entry point for core van assistant system."""
 
-from shared.logging import get_logger
+from shared.logger import get_logger
 
-from core.config import load_config
+from core.config.config import load_config
 
 logger = get_logger(__name__)
 

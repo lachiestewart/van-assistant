@@ -21,7 +21,6 @@ dev = [
 [tool.uv.workspace]
 members = [
     "packages/core",
-    "packages/drivers",
     "packages/shared",
     "packages/api",
 ]
