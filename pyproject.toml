@@ -7,6 +7,14 @@ authors = [
     { name = "Lachie Stewart", email = "lachiestewart2003@gmail.com" }
 ]
 requires-python = ">=3.12"
+dependencies = [
+    "bleak>=3.0.1",
+    "pyyaml>=6.0.3",
+    "requests>=2.33.1",
+]
+
+
+
 
 [dependency-groups]
 dev = [
@@ -15,18 +23,11 @@ dev = [
     "pytest-cov>=7.0.0",
     "pytest-mock>=3.15.1",
     "ruff>=0.14.8",
-    "mypy>=1.19.0",
+    "ty>=0.0.27",
 ]
 
-[tool.uv.workspace]
-members = [
-    "packages/core",
-    "packages/shared",
-    "packages/api",
-]
-
-[tool.uv]
-package = false
+[project.scripts]
+van = "van_assistant.main:main"
 
 [tool.ruff.lint]
 select = ["ALL"]
@@ -37,3 +38,8 @@ ignore = [
 
 [tool.pytest]
 asyncio_mode = "auto"
+
+
+[build-system]
+requires = ["uv_build>=0.9.16,<0.10.0"]
+build-backend = "uv_build"

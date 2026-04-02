@@ -3,6 +3,6 @@
     "charliermarsh.ruff",
     "ms-python.python",
     "the0807.uv-toolkit",
-    "ms-python.mypy-type-checker"
+    "astral-sh.ty"
   ]
 }
