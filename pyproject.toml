@@ -10,6 +10,7 @@ requires-python = ">=3.12"
 dependencies = [
     "bleak>=3.0.1",
     "paho-mqtt>=2.1.0",
+    "pycryptodome>=3.23.0",
     "pyyaml>=6.0.3",
     "requests>=2.33.1",
 ]
@@ -27,11 +28,17 @@ dev = [
 [project.scripts]
 van = "van_assistant.main:main"
 
+[tool.ruff]
+line-length = 100
+
 [tool.ruff.lint]
 select = ["ALL"]
 
 ignore = [
     "G004", # Ignore f-string
+    "D100", # Ignore missing docstring in public module
+    "D104", # Ignore missing docstring in public package
+    "PLR2004", # Ignore magic values
 ]
 
 [tool.pytest]

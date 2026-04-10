@@ -10,50 +10,57 @@ from van_assistant.notification_services.base import NotificationService
 class BLEConnectableDevice(Device):
     """Device that requires a BLE connection and may poll / receive notifications."""
 
-    POLL_INTERVAL = 10.0
+    connectable = True
 
     def __init__(self, addr: str, notification_service: NotificationService) -> None:
-        super().__init__(addr, notification_service)
-        self._running = False
-        self._client: BleakClient | None = None
+        """Create a BLE connectable device.
 
-    @abstractmethod
-    async def _notify_handler(
+        Args:
+            addr: Unique identifier for the device, e.g. BLE MAC address.
+            notification_service: Service to publish notifications to.
+
+        """
+        super().__init__(addr, notification_service)
+        self._client = BleakClient(self.addr)
+        self._running = False
+
+    async def notify_handler(
         self,
-        sender: BleakGATTCharacteristic,
+        sender: BleakGATTCharacteristic,  # noqa: ARG002
         data: bytearray,
     ) -> None:
-        """Handle incoming BLE notifications."""
+        """Handle incoming BLE notifications.
 
-    @abstractmethod
-    def _get_notify_uuid(self) -> str:
-        """Return the UUID to subscribe to for notifications."""
+        Args:
+            sender: The characteristic that sent the notification.
+            data: The data received in the notification.
 
-    @abstractmethod
-    async def _run(self) -> None:
-        """Main loop for polling or handling notifications."""
+        """
+        await self.handle_data(data)
 
     async def start(self) -> None:
         """Establish BLE connection."""
         self._running = True
 
-        self._client = BleakClient(self.addr)
         await self._client.connect()
 
         await self._client.start_notify(
-            self._get_notify_uuid(),
-            self._notify_handler,
+            self.get_notify_uuid(),
+            self.notify_handler,
         )
 
-        await self._run()
+        await self.run()
 
     async def stop(self) -> None:
         """Disconnect BLE cleanly."""
         self._running = False
-        if not self._client:
-            return
 
-        await self._client.stop_notify(self._get_notify_uuid())
+        await self._client.disconnect()
 
-        if self._client.is_connected:
-            await self._client.disconnect()
+    @abstractmethod
+    def get_notify_uuid(self) -> str:
+        """Return the UUID to subscribe to for notifications."""
+
+    @abstractmethod
+    async def run(self) -> None:
+        """Start polling device."""

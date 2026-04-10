@@ -1,34 +1,21 @@
+from abc import abstractmethod
+
 from bleak import BleakScanner
 from bleak.backends.device import BLEDevice
 from bleak.backends.scanner import AdvertisementData
-
-from van_assistant.device_manager import DeviceManager
 
 MAX_SEEN_DATA = 1000
 
 
 class BaseScanner:
-    """Base class for BLE scanners that detect and process manufacturer-specific advertisement data.
+    """Base class for BLE scanner."""
 
-    This class provides a foundation for scanning BLE devices and handling their advertisement data.
-    """
-
-    def __init__(self, device_manager: DeviceManager) -> None:
-        """Initialize the scanner.
-
-        Args:
-            device_manager: The DeviceManager instance to use for managing detected devices.
-
-        """
-        self.device_manager = device_manager
-
-        self._scanner: BleakScanner = BleakScanner(
-            detection_callback=self._detection_callback,
-        )
-
+    def __init__(self) -> None:
+        """Initialize the scanner."""
+        self._scanner = BleakScanner(self.detection_callback)
         self._seen_data: set[bytes] = set()
 
-    def _detection_callback(
+    def detection_callback(
         self,
         ble_device: BLEDevice,
         ad_data: AdvertisementData,
@@ -51,6 +38,15 @@ class BaseScanner:
 
             self.callback(manufacturer_id, ble_device, data)
 
+    async def start(self) -> None:
+        """Start the BLE scanner."""
+        await self._scanner.start()
+
+    async def stop(self) -> None:
+        """Stop the BLE scanner."""
+        await self._scanner.stop()
+
+    @abstractmethod
     def callback(
         self,
         manufacturer_id: int,
@@ -69,9 +65,3 @@ class BaseScanner:
             data: The manufacturer-specific advertisement data.
 
         """
-
-    async def start(self):
-        await self._scanner.start()
-
-    async def stop(self):
-        await self._scanner.stop()
