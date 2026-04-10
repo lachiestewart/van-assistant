@@ -17,3 +17,5 @@ mosquitto/*
 !mosquitto/config/
 mosquitto/config/*
 !mosquitto/config/mosquitto.conf
+
+.data/

@@ -1,7 +1,7 @@
 import requests
 import yaml
 
-from van_assistant.devices.base import SupportedBrand
+from van_assistant.devices.brands import SupportedBrand
 
 url = "https://bitbucket.org/bluetooth-SIG/public/raw/main/assigned_numbers/company_identifiers/company_identifiers.yaml"
 
@@ -16,6 +16,7 @@ def get_company_identifiers() -> dict[int, str]:
 
 
 COMPANY_IDS: dict[int, str] = get_company_identifiers()
+COMPANY_IDS[0x3461] = "Remco Energy"
 
 
 if __name__ == "__main__":
